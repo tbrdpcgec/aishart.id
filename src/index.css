@@ -106,7 +106,7 @@ button {
 .floating-chat-button {
   position: fixed;
   right: 24px;
-  bottom: 24px;
+  bottom: 25px;
   z-index: 9999;
 
   display: flex;
