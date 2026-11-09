@@ -23,26 +23,29 @@ export default async (request) => {
     });
 
     const result = await response.text();
-    const contentType = response.headers.get('content-type') || '';
+    const contentType =
+      response.headers.get('content-type') || '';
 
-    // Periksa apakah Google Apps Script mengembalikan JSON
+    // Validasi respons Google Apps Script
     try {
       JSON.parse(result);
-    } catch {
+    } catch (parseError) {
       console.error('Invalid Apps Script response:', {
         status: response.status,
         contentType,
         responseUrl: response.url,
       });
 
-    return Response.json({
-  success: false,
-  message: 'Google Apps Script mengembalikan respons bukan JSON.',
-  upstream_status: response.status,
-  upstream_content_type: contentType,
-  upstream_preview: result.slice(0, 1500),
-}, { status: 502 });
+      return Response.json({
+        success: false,
+        message: 'Google Apps Script mengembalikan respons bukan JSON.',
+        upstream_status: response.status,
+        upstream_content_type: contentType,
+        upstream_preview: result.slice(0, 1500),
+      }, { status: 502 });
+    }
 
+    // Jika respons valid JSON, teruskan ke frontend
     return new Response(result, {
       status: response.status,
       headers: {
@@ -50,9 +53,6 @@ export default async (request) => {
         'Cache-Control': 'no-store',
       },
     });
-
-
-    
 
   } catch (error) {
     console.error('Admin Function Error:', error);
