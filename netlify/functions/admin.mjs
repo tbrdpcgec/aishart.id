@@ -35,13 +35,13 @@ export default async (request) => {
         responseUrl: response.url,
       });
 
-      return Response.json({
-        success: false,
-        message: 'Google Apps Script mengembalikan respons bukan JSON.',
-        upstream_status: response.status,
-        upstream_content_type: contentType,
-      }, { status: 502 });
-    }
+    return Response.json({
+  success: false,
+  message: 'Google Apps Script mengembalikan respons bukan JSON.',
+  upstream_status: response.status,
+  upstream_content_type: contentType,
+  upstream_preview: result.slice(0, 1500),
+}, { status: 502 });
 
     return new Response(result, {
       status: response.status,
