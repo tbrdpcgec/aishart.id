@@ -52,6 +52,105 @@ export default function AdminPanel({ token, onLogout, onClose }) {
     }).format(number);
   };
 
+// Mengubah nilai harga menjadi angka
+const getPriceNumber = (value) => {
+  return Number(String(value ?? 0).replace(/[^\d-]/g, '')) || 0;
+};
+
+// Membuat baris harga hanya jika nilainya lebih dari 0
+const priceMessageLine = (label, value) => {
+  if (getPriceNumber(value) <= 0) return null;
+
+  return `${label}: ${formatRupiah(value)}`;
+};
+
+// Membuat link tracking
+const getTrackingLink = (order) => {
+  const params = new URLSearchParams({
+    order_id: order.order_id || '',
+    order_token: order.order_token || '',
+  });
+
+  return `${window.location.origin}/?${params.toString()}`;
+};
+
+// Membuat pesan WhatsApp
+const handleWhatsApp = (order) => {
+  let whatsappNumber = String(order.whatsapp || '').replace(/\D/g, '');
+
+  if (!whatsappNumber) {
+    alert('Nomor WhatsApp pelanggan tidak tersedia.');
+    return;
+  }
+
+  // Mengubah nomor Indonesia ke format internasional
+  if (whatsappNumber.startsWith('0')) {
+    whatsappNumber = '62' + whatsappNumber.slice(1);
+  } else if (whatsappNumber.startsWith('8')) {
+    whatsappNumber = '62' + whatsappNumber;
+  }
+
+  const priceDetails = [
+    priceMessageLine('Base Price', order.base_price),
+    priceMessageLine('Additional Face', order.face_fee),
+    priceMessageLine('Theme Fee', order.theme_fee),
+    priceMessageLine('Other Fee', order.other_fee),
+    priceMessageLine('Discount', order.discount),
+    priceMessageLine('Express Fee', order.express_fee),
+    priceMessageLine('Delivery Fee', order.delivery_fee),
+  ].filter(Boolean);
+
+  const paymentDetails = [
+    priceMessageLine('Final Total', order.final_total),
+    priceMessageLine('DP Paid', order.dp_paid),
+    priceMessageLine('Remaining Payment', order.remaining_payment),
+  ].filter(Boolean);
+
+  const trackingLink = getTrackingLink(order);
+
+  const message = `Halo ${order.customer_name || ''},
+
+Terima kasih telah melakukan pemesanan di aishart.id.
+
+Berikut konfirmasi pesanan Anda:
+
+ORDER ID
+${order.order_id || '-'}
+
+DETAIL PESANAN
+Produk: ${order.product_type || '-'}
+Frame: ${order.frame_type || '-'}
+Ukuran: ${order.size || '-'}
+
+RINCIAN HARGA
+${priceDetails.length ? priceDetails.join('\n') : '-'}
+
+TOTAL PEMBAYARAN
+${paymentDetails.join('\n') || '-'}
+
+METODE PEMBAYARAN
+BSI
+No. Rekening: 4386683570
+Atas Nama: Puji Alimin
+
+SeaBank
+No. Rekening: 08977340266
+Atas Nama: Puji Alimin
+
+Silakan melakukan pembayaran sesuai rincian di atas dan mengirimkan bukti pembayaran kepada admin.
+
+TRACKING PESANAN
+${trackingLink}
+
+Terima kasih telah mempercayakan artwork Anda kepada aishart.id.`;
+
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    message
+  )}`;
+
+  window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+};
+  
   const statusCounts = {
     total: orders.length,
     waitingApproval: orders.filter((o) =>
@@ -205,7 +304,9 @@ export default function AdminPanel({ token, onLogout, onClose }) {
                       <th>Requested Date</th>
                       <th>Requested Time</th>
                       <th>Express Status</th>
-                      <th>Order Status</th>
+<th>Order Status</th>
+<th>Tracking</th>
+<th>WhatsApp</th>
                     </tr>
                   </thead>
 
@@ -250,13 +351,40 @@ export default function AdminPanel({ token, onLogout, onClose }) {
                         <td>{order.requested_completion_date}</td>
                         <td>{order.requested_completion_time}</td>
                         <td>{order.express_status}</td>
-                        <td>{order.order_status}</td>
+<td>{order.order_status}</td>
+
+<td>
+  {order.order_id && order.order_token ? (
+    <a
+      href={getTrackingLink(order)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="admin-edit-button"
+      title="Open Tracking"
+    >
+      Track
+    </a>
+  ) : (
+    '-'
+  )}
+</td>
+
+<td>
+  <button
+    type="button"
+    className="admin-edit-button"
+    title="Send WhatsApp Confirmation"
+    onClick={() => handleWhatsApp(order)}
+  >
+    WhatsApp
+  </button>
+</td>
                       </tr>
                     ))}
 
                     {orders.length === 0 && (
                       <tr>
-                        <td colSpan="22">No orders found.</td>
+                        <td colSpan="26">No orders found.</td>
                       </tr>
                     )}
                   </tbody>
