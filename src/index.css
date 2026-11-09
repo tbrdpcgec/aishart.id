@@ -680,7 +680,7 @@ button {
   background: #f4e9dd;
   border-top: 1px solid #eadfd5;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 10px;
 }
 
