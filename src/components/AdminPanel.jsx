@@ -353,26 +353,26 @@ Terima kasih telah mempercayakan artwork Anda kepada aishart.id.`;
                         <td>{order.express_status}</td>
 <td>{order.order_status}</td>
 
-<td>
+<td className="admin-action-cell">
   {order.order_id && order.order_token ? (
     <a
       href={getTrackingLink(order)}
       target="_blank"
       rel="noopener noreferrer"
-      className="admin-edit-button"
+      className="admin-action-button tracking-action-button"
       title="Open Tracking"
     >
-      Track
+      Tracking
     </a>
   ) : (
-    '-'
+    <span>-</span>
   )}
 </td>
 
-<td>
+<td className="admin-action-cell">
   <button
     type="button"
-    className="admin-edit-button"
+    className="admin-action-button whatsapp-action-button"
     title="Send WhatsApp Confirmation"
     onClick={() => handleWhatsApp(order)}
   >
