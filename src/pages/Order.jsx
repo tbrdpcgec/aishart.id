@@ -530,58 +530,34 @@ export default function Order({ initialProduct = '' }) {
                 ))}
               </div>
             </div>
-            <div className="quantity-row">
-              <div className="form-group">
-                <label>Jumlah Orderan</label>
+           <div className="quantity-row">
+  <div className="form-group">
+    <label>Jumlah Wajah</label>
 
-                <div className="quantity-control">
-                  <button
-                    type="button"
-                    aria-label="Kurangi jumlah"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  >
-                    −
-                  </button>
+    <div className="quantity-control">
+      <button
+        type="button"
+        aria-label="Kurangi jumlah wajah"
+        onClick={() =>
+          setFaceCount((count) => Math.max(1, count - 1))
+        }
+        disabled={faceCount <= 1}
+      >
+        −
+      </button>
 
-                  <span>{quantity}</span>
+      <span>{faceCount}</span>
 
-                  <button
-                    type="button"
-                    aria-label="Tambah jumlah"
-                    onClick={() => setQuantity((q) => Math.min(99, q + 1))}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Jumlah Wajah </label>
-
-                <div className="quantity-control">
-                  <button
-                    type="button"
-                    aria-label="Kurangi jumlah wajah"
-                    onClick={() =>
-                      setFaceCount((count) => Math.max(1, count - 1))
-                    }
-                    disabled={faceCount <= 1}
-                  >
-                    −
-                  </button>
-
-                  <span>{faceCount}</span>
-
-                  <button
-                    type="button"
-                    aria-label="Tambah jumlah wajah"
-                    onClick={() => setFaceCount((count) => count + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            </div>
+      <button
+        type="button"
+        aria-label="Tambah jumlah wajah"
+        onClick={() => setFaceCount((count) => count + 1)}
+      >
+        +
+      </button>
+    </div>
+  </div>
+</div>
 
             {/* Pilihan tema */}
             <div className="form-group">
