@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchOrderTracking } from '../services/tracking';
 
 const TRACKING_STEPS = [
@@ -75,29 +75,39 @@ function StepIcon({ type }) {
   return <svg {...common}>{paths[type]}</svg>;
 }
 
-export default function Tracking() {
-  const [orderId, setOrderId] = useState('');
-  const [orderToken, setOrderToken] = useState('');
+export default function Tracking({ initialOrderId = '', initialOrderToken = '' }) {
+const [orderId, setOrderId] = useState(initialOrderId);
+const [orderToken, setOrderToken] = useState(initialOrderToken);
   const [order, setOrder] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  async function handleSearch(e) {
-    e.preventDefault();
+  async function searchOrder(id, token) {
+  setLoading(true);
+  setError('');
+  setOrder(null);
 
-    setLoading(true);
-    setError('');
-    setOrder(null);
-
-    try {
-      const result = await fetchOrderTracking(orderId, orderToken);
-      setOrder(result);
-    } catch (err) {
-      setError(err.message || 'Pesanan tidak ditemukan.');
-    } finally {
-      setLoading(false);
-    }
+  try {
+    const result = await fetchOrderTracking(id, token);
+    setOrder(result);
+  } catch (err) {
+    setError(err.message || 'Pesanan tidak ditemukan.');
+  } finally {
+    setLoading(false);
   }
+}
+
+useEffect(() => {
+  if (initialOrderId && initialOrderToken) {
+    searchOrder(initialOrderId, initialOrderToken);
+  }
+}, [initialOrderId, initialOrderToken]);
+
+  
+  async function handleSearch(e) {
+  e.preventDefault();
+  await searchOrder(orderId, orderToken);
+}
 
   const activeStep = order ? getProgressIndex(order.order_status) : -1;
 
