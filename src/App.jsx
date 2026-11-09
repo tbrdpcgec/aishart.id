@@ -29,7 +29,22 @@ export default function App() {
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
   const [adminToken, setAdminToken] = useState(null);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  const [trackingOrderId, setTrackingOrderId] = useState('');
+const [trackingOrderToken, setTrackingOrderToken] = useState('');
 
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  const orderId = params.get('order_id');
+  const orderToken = params.get('order_token');
+
+  if (orderId && orderToken) {
+    setTrackingOrderId(orderId);
+    setTrackingOrderToken(orderToken);
+    setIsTrackingOpen(true);
+  }
+}, []);
+  
   function goToOrder() {
     setInitialProduct('Personalized Framed Artwork');
 
@@ -280,7 +295,10 @@ export default function App() {
               ×
             </button>
 
-            <Tracking />
+            <Tracking
+  initialOrderId={trackingOrderId}
+  initialOrderToken={trackingOrderToken}
+/>
           </div>
         </div>
       )}
