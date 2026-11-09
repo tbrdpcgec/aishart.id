@@ -110,39 +110,70 @@ const handleWhatsApp = (order) => {
 
   const message = `Halo ${order.customer_name || ''},
 
-Terima kasih telah melakukan pemesanan di aishart.id.
+🎨 *aishart.id | ORDER CONFIRMATION*
 
-Berikut konfirmasi pesanan Anda:
+Halo *${order.customer_name || 'Customer'}*! 👋
 
-ORDER ID
-${order.order_id || '-'}
+Terima kasih telah melakukan pemesanan di *@aishart.id*.
 
-DETAIL PESANAN
-Produk: ${order.product_type || '-'}
-Frame: ${order.frame_type || '-'}
-Ukuran: ${order.size || '-'}
+Berikut detail konfirmasi pesanan Anda:
 
-RINCIAN HARGA
+━━━━━━━━━━━━━━━━━━
+🧾 *ORDER INFORMATION*
+━━━━━━━━━━━━━━━━━━
+
+🔖 Order ID:
+*${order.order_id || '-'}*
+
+━━━━━━━━━━━━━━━━━━
+🖼️ *DETAIL PESANAN*
+━━━━━━━━━━━━━━━━━━
+
+🎨 Produk: ${order.product_type || '-'}
+🖼️ Frame: ${order.frame_type || '-'}
+📐 Ukuran: ${order.size || '-'}
+
+━━━━━━━━━━━━━━━━━━
+💰 *RINCIAN HARGA*
+━━━━━━━━━━━━━━━━━━
+
 ${priceDetails.length ? priceDetails.join('\n') : '-'}
 
-TOTAL PEMBAYARAN
+━━━━━━━━━━━━━━━━━━
+💳 *TOTAL PEMBAYARAN*
+━━━━━━━━━━━━━━━━━━
+
 ${paymentDetails.join('\n') || '-'}
 
-METODE PEMBAYARAN
-BSI
-No. Rekening: 4386683570
-Atas Nama: Puji Alimin
+━━━━━━━━━━━━━━━━━━
+🏦 *METODE PEMBAYARAN*
+━━━━━━━━━━━━━━━━━━
 
-SeaBank
-No. Rekening: 08977340266
-Atas Nama: Puji Alimin
+*1. Bank Syariah Indonesia (BSI)*
+No. Rekening: `4386683570`
+Atas Nama: *Puji Alimin*
 
-Silakan melakukan pembayaran sesuai rincian di atas dan mengirimkan bukti pembayaran kepada admin.
+*2. SeaBank*
+No. Rekening: `08977340266`
+Atas Nama: *Puji Alimin*
 
-TRACKING PESANAN
+━━━━━━━━━━━━━━━━━━
+
+📌 *INFORMASI PEMBAYARAN*
+
+Silakan melakukan pembayaran sesuai rincian di atas dan mengirimkan bukti pembayaran kepada admin untuk konfirmasi.
+
+📦 *TRACKING PESANAN*
+
+Pantau progres pesanan Anda melalui link berikut:
+
 ${trackingLink}
 
-Terima kasih telah mempercayakan artwork Anda kepada aishart.id.`;
+━━━━━━━━━━━━━━━━━━
+
+Terima kasih telah mempercayakan momen spesial Anda kepada *@aishart.id*.
+
+✨ *Your memories, made timeless.* ❤️.`;
 
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     message
