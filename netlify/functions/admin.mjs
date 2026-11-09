@@ -41,7 +41,10 @@ export default async (request) => {
         message: 'Google Apps Script mengembalikan respons bukan JSON.',
         upstream_status: response.status,
         upstream_content_type: contentType,
-        upstream_preview: result.slice(0, 1500),
+        upstream_preview:
+  result.slice(0, 500) +
+  '\n--- BAGIAN AKHIR ---\n' +
+  result.slice(-3000),
       }, { status: 502 });
     }
 
