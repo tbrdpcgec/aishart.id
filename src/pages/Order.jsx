@@ -369,70 +369,96 @@ export default function Order({ initialProduct = '' }) {
       const result = await submitOrder(orderData);
 
       const message = [
-        'Halo, saya ingin konfirmasi pesanan artwork.',
-        '',
-        `Order ID: ${result.order_id}`,
-        '',
-        'DETAIL CUSTOMER',
-        `Nama: ${customer.name}`,
-        `WhatsApp: ${customer.whatsapp}`,
-        '',
-        'DETAIL PESANAN',
-        `Produk: Personalized Framed Artwork`,
-        `Frame: ${frameType}`,
-        `Ukuran: ${size}`,
-        `Jumlah pesanan: ${quantity}`,
-        `Jumlah wajah: ${faceCount}`,
-        `Tema artwork: ${theme}`,
-        '',
-        'KUSTOMISASI ARTWORK',
-        `Pakaian / Seragam: ${customer.clothingDescription}`,
-        `Background: ${customer.backgroundDescription}`,
-        `Ucapan / Teks: ${customer.artworkText || '-'}`,
-        `Deskripsi Artwork: ${customer.artworkDescription || '-'}`,
-        '',
-        'LAYANAN & ESTIMASI PENGERJAAN',
-        `Layanan: ${
-          serviceType === 'EXPRESS' ? 'Express Order' : 'Standard Order'
-        }`,
-        `Estimasi standar: ${standardMinDays}-${standardMaxDays} hari kerja`,
-        ...(serviceType === 'EXPRESS'
-          ? [
-              `Tanggal yang diminta: ${requestedCompletionDate}`,
-              `Target waktu: Sebelum ${requestedCompletionTime}`,
-              'Status Express: Waiting Approval',
-            ]
-          : []),
-        'Catatan: Estimasi mulai dihitung setelah DP 50% diterima dan dikonfirmasi admin.',
-        '',
-
-        'METODE PENERIMAAN PESANAN',
-        `Metode: ${
-          deliveryMethod === 'PICKUP'
-            ? 'Ambil Sendiri'
-            : 'Dikirim ke Alamat Saya'
-        }`,
-        ...(deliveryMethod === 'PICKUP'
-          ? [
-              `Alamat Pickup: ${pickupAddress}`,
-              `Google Maps: ${pickupMapsUrl || '-'}`,
-            ]
-          : [
-              `Alamat Pengiriman: ${deliveryAddress}`,
-              `Google Maps: ${deliveryMapsUrl || '-'}`,
-              'Biaya Pengiriman: Waiting Approval',
-            ]),
-        '',
-
-        'RINCIAN HARGA',
-        `Harga produk: ${formatRupiah(unitPrice * quantity)}`,
-        `Biaya tambahan wajah: ${formatRupiah(additionalFacePrice)}`,
-        `Biaya tema: ${formatRupiah(themePrice)}`,
-        `Estimasi total: ${formatRupiah(estimatedTotal)}`,
-        '',
-
-        'Mohon konfirmasi pesanan dan harga final saya. Terima kasih.',
-      ].join('\n');
+  '🎨 *aishart.id | ORDER CONFIRMATION*',
+  '',
+  `Halo *${customer.name}*! 👋`,
+  'Terima kasih telah melakukan pemesanan di *@aishart.id*.',
+  '',
+  'Berikut detail pesanan yang ingin saya konfirmasi:',
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '🧾 *ORDER INFORMATION*',
+  '━━━━━━━━━━━━━━━━━━',
+  `🔖 Order ID: *${result.order_id}*`,
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '👤 *DETAIL CUSTOMER*',
+  '━━━━━━━━━━━━━━━━━━',
+  `👤 Nama: ${customer.name}`,
+  `📱 WhatsApp: ${customer.whatsapp}`,
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '🖼️ *DETAIL PESANAN*',
+  '━━━━━━━━━━━━━━━━━━',
+  '🎨 Produk: Personalized Framed Artwork',
+  `🖼️ Frame: ${frameType}`,
+  `📐 Ukuran: ${size}`,
+  `📦 Jumlah pesanan: ${quantity}`,
+  `👥 Jumlah wajah: ${faceCount}`,
+  `🎭 Tema artwork: ${theme}`,
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '✏️ *KUSTOMISASI ARTWORK*',
+  '━━━━━━━━━━━━━━━━━━',
+  `👕 Pakaian / Seragam: ${customer.clothingDescription}`,
+  `🏞️ Background: ${customer.backgroundDescription}`,
+  `💬 Ucapan / Teks: ${customer.artworkText || '-'}`,
+  `📝 Deskripsi Artwork: ${customer.artworkDescription || '-'}`,
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '⏱️ *LAYANAN & ESTIMASI PENGERJAAN*',
+  '━━━━━━━━━━━━━━━━━━',
+  `⚡ Layanan: ${
+    serviceType === 'EXPRESS' ? 'Express Order' : 'Standard Order'
+  }`,
+  `📅 Estimasi standar: ${standardMinDays}-${standardMaxDays} hari kerja`,
+  ...(serviceType === 'EXPRESS'
+    ? [
+        `📆 Tanggal yang diminta: ${requestedCompletionDate}`,
+        `🕒 Target waktu: Sebelum ${requestedCompletionTime}`,
+        '📌 Status Express: Waiting Approval',
+      ]
+    : []),
+  '',
+  '📍 Catatan: Estimasi mulai dihitung setelah DP 50% diterima dan dikonfirmasi admin.',
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '🚚 *METODE PENERIMAAN PESANAN*',
+  '━━━━━━━━━━━━━━━━━━',
+  `📦 Metode: ${
+    deliveryMethod === 'PICKUP'
+      ? 'Ambil Sendiri'
+      : 'Dikirim ke Alamat Saya'
+  }`,
+  ...(deliveryMethod === 'PICKUP'
+    ? [
+        `📍 Alamat Pickup: ${pickupAddress}`,
+        `🗺️ Google Maps: ${pickupMapsUrl || '-'}`,
+      ]
+    : [
+        `📍 Alamat Pengiriman: ${deliveryAddress}`,
+        `🗺️ Google Maps: ${deliveryMapsUrl || '-'}`,
+        '💰 Biaya Pengiriman: Waiting Approval',
+      ]),
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '💰 *RINCIAN HARGA*',
+  '━━━━━━━━━━━━━━━━━━',
+  `🖼️ Harga produk: ${formatRupiah(unitPrice * quantity)}`,
+  `👥 Biaya tambahan wajah: ${formatRupiah(additionalFacePrice)}`,
+  `🎭 Biaya tema: ${formatRupiah(themePrice)}`,
+  '',
+  `💵 *ESTIMASI TOTAL: ${formatRupiah(estimatedTotal)}*`,
+  '',
+  '━━━━━━━━━━━━━━━━━━',
+  '🙏 *KONFIRMASI PESANAN*',
+  '━━━━━━━━━━━━━━━━━━',
+  'Mohon konfirmasi pesanan dan harga final saya.',
+  '',
+  'Terima kasih! ❤️',
+  '',
+  '✨ *Your memories, made timeless.*',
+].join('\n');
 
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
         message
