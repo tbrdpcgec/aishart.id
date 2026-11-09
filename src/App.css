@@ -2212,6 +2212,61 @@ h2 span {
   transition: all 0.2s ease;
 }
 
+/* Admin action buttons */
+.admin-action-cell {
+  min-width: 105px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.admin-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.tracking-action-button {
+  color: #334155;
+  background: #e9eef5;
+  border: 1px solid #d7dee8;
+}
+
+.tracking-action-button:hover {
+  background: #dce5f0;
+  color: #1e293b;
+}
+
+.whatsapp-action-button {
+  color: #ffffff;
+  background: #25a45a;
+}
+
+.whatsapp-action-button:hover {
+  background: #198c49;
+}
+
+.admin-action-button:active {
+  transform: scale(0.97);
+}
+
+.admin-action-button:focus-visible {
+  outline: 2px solid #64748b;
+  outline-offset: 2px;
+}
 .footer-admin-link:hover {
   color: #9d654a;
   opacity: 1;
