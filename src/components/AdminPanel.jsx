@@ -185,6 +185,7 @@ export default function AdminPanel({ token, onLogout, onClose }) {
                       <th>Product</th>
                       <th>Frame</th>
                       <th>Size</th>
+                      <th>Base Price</th>
 
                       <th>Face Fee</th>
                       <th>Theme Fee</th>
@@ -227,6 +228,7 @@ export default function AdminPanel({ token, onLogout, onClose }) {
                         <td>{order.product_type}</td>
                         <td>{order.frame_type}</td>
                         <td>{order.size}</td>
+                        <td>{formatRupiah(order.base_price)}</td>
 
                         <td>{formatRupiah(order.face_fee)}</td>
                         <td>{formatRupiah(order.theme_fee)}</td>
