@@ -184,18 +184,21 @@ Terima kasih telah mempercayakan momen spesial Anda kepada *@aishart.id*.
 };
   
   const statusCounts = {
-    total: orders.length,
-    waitingApproval: orders.filter((o) =>
-      String(o.order_status).toLowerCase().includes('approval')
-    ).length,
-    waitingPayment: orders.filter((o) =>
-      String(o.payment_status).toLowerCase().includes('waiting')
-    ).length,
-    production: orders.filter((o) => o.order_status === 'In Production').length,
-    packing: orders.filter((o) => o.order_status === 'Packing').length,
-    delivery: orders.filter((o) => o.order_status === 'On Delivery').length,
-    completed: orders.filter((o) => o.order_status === 'Completed').length,
-  };
+  total: orders.length,
+  waitingApproval: orders.filter((o) =>
+    String(o.order_status).toLowerCase().includes('approval')
+  ).length,
+  waitingPayment: orders.filter((o) => {
+    const orderStatus = String(o.order_status).toLowerCase();
+    const paymentStatus = String(o.payment_status).toLowerCase();
+    return orderStatus === 'waiting payment' || paymentStatus.includes('waiting');
+  }).length,
+  production: orders.filter((o) => o.order_status === 'In Production').length,
+  printing: orders.filter((o) => o.order_status === 'Printing').length,
+  packing: orders.filter((o) => o.order_status === 'Packing').length,
+  delivery: orders.filter((o) => o.order_status === 'On Delivery').length,
+  completed: orders.filter((o) => o.order_status === 'Completed').length,
+};
 
   const filteredOrders = orders.filter((order) => {
     if (statusFilter === 'All') return true;
@@ -263,6 +266,11 @@ Terima kasih telah mempercayakan momen spesial Anda kepada *@aishart.id*.
                   <span>In Production</span>
                   <strong>{statusCounts.production}</strong>
                 </div>
+
+                <div className="admin-stat-card">
+  <span>Printing</span>
+  <strong>{statusCounts.printing}</strong>
+</div>
 
                 <div className="admin-stat-card">
                   <span>Packing</span>
