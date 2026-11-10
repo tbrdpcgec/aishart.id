@@ -1,4 +1,4 @@
-const ADMIN_API_URL = '/.netlify/functions/admin';
+const ADMIN_API_URL = '/api/admin';
 
 async function adminRequest(data) {
   const response = await fetch(ADMIN_API_URL, {
