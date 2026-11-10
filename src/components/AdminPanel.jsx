@@ -76,40 +76,42 @@ const getTrackingLink = (order) => {
 };
 
 // Membuat pesan WhatsApp
-const handleWhatsApp = (order) => {
-  let whatsappNumber = String(order.whatsapp || '').replace(/\D/g, '');
+const normalizeWhatsapp = (raw) => {
+  let n = String(raw || '').replace(/\D/g, '');
+  if (n.startsWith('0')) n = '62' + n.slice(1);
+  else if (n.startsWith('8')) n = '62' + n;
+  return n;
+};
 
-  if (!whatsappNumber) {
-    alert('Nomor WhatsApp pelanggan tidak tersedia.');
-    return;
-  }
+const getPriceRows = (order) =>
+  [
+    ['Base Price', order.base_price],
+    ['Additional Face', order.face_fee],
+    ['Theme Fee', order.theme_fee],
+    ['Other Fee', order.other_fee],
+    ['Discount', order.discount],
+    ['Express Fee', order.express_fee],
+    ['Delivery Fee', order.delivery_fee],
+  ].filter(([, v]) => getPriceNumber(v) > 0);
 
-  // Mengubah nomor Indonesia ke format internasional
-  if (whatsappNumber.startsWith('0')) {
-    whatsappNumber = '62' + whatsappNumber.slice(1);
-  } else if (whatsappNumber.startsWith('8')) {
-    whatsappNumber = '62' + whatsappNumber;
-  }
+const getPaymentRows = (order) =>
+  [
+    ['Final Total', order.final_total],
+    ['DP Paid', order.dp_paid],
+    ['Remaining Payment', order.remaining_payment],
+  ].filter(([, v]) => getPriceNumber(v) > 0);
 
-  const priceDetails = [
-    priceMessageLine('Base Price', order.base_price),
-    priceMessageLine('Additional Face', order.face_fee),
-    priceMessageLine('Theme Fee', order.theme_fee),
-    priceMessageLine('Other Fee', order.other_fee),
-    priceMessageLine('Discount', order.discount),
-    priceMessageLine('Express Fee', order.express_fee),
-    priceMessageLine('Delivery Fee', order.delivery_fee),
-  ].filter(Boolean);
-
-  const paymentDetails = [
-    priceMessageLine('Final Total', order.final_total),
-    priceMessageLine('DP Paid', order.dp_paid),
-    priceMessageLine('Remaining Payment', order.remaining_payment),
-  ].filter(Boolean);
-
+const buildWhatsAppMessage = (order) => {
+  const priceDetails = getPriceRows(order).map(
+    ([label, v]) => `${label}: ${formatRupiah(v)}`
+  );
+  const paymentDetails = getPaymentRows(order).map(
+    ([label, v]) => `${label}: ${formatRupiah(v)}`
+  );
   const trackingLink = getTrackingLink(order);
 
-  const message = `Halo ${order.customer_name || ''},
+  // SALIN template `message` lama kamu ke sini (mulai dari `Halo ${order.customer_name || ''},` sampai `❤️.`)
+  return `Halo ${order.customer_name || ''},
 
 🎨 *aishart.id | ORDER CONFIRMATION*
 
@@ -175,12 +177,139 @@ ${trackingLink}
 Terima kasih telah mempercayakan momen spesial Anda kepada *@aishart.id*.
 
 ✨ *Your memories, made timeless.* ❤️.`;
+};
 
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    message
+const handleWhatsApp = (order) => {
+  const number = normalizeWhatsapp(order.whatsapp);
+  if (!number) {
+    alert('Nomor WhatsApp pelanggan tidak tersedia.');
+    return;
+  }
+  const url = `https://wa.me/${number}?text=${encodeURIComponent(
+    buildWhatsAppMessage(order)
   )}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+};
 
-  window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  const buildInvoicePdf = async (order) => {
+  const { jsPDF } = await import('jspdf');
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const left = 20;
+  const right = 190;
+  let y = 22;
+
+  const text = (str, x, size = 11, style = 'normal', align = 'left') => {
+    doc.setFont('helvetica', style);
+    doc.setFontSize(size);
+    doc.text(String(str ?? '-'), x, y, { align });
+  };
+  const row = (label, value, bold = false) => {
+    text(label, left, 11, bold ? 'bold' : 'normal');
+    text(value, right, 11, bold ? 'bold' : 'normal', 'right');
+    y += 7;
+  };
+  const rule = () => {
+    doc.setDrawColor(200);
+    doc.line(left, y, right, y);
+    y += 8;
+  };
+
+  text('aishart.id', left, 20, 'bold');
+  y += 7;
+  text('INVOICE', left, 12);
+  text(`Order ID: ${order.order_id || '-'}`, right, 11, 'normal', 'right');
+  y += 6;
+  text(`Tanggal: ${order.order_date || '-'}`, right, 11, 'normal', 'right');
+  y += 8;
+  rule();
+
+  text('Customer', left, 12, 'bold');
+  y += 7;
+  row('Nama', order.customer_name || '-');
+  row('WhatsApp', order.whatsapp || '-');
+  y += 2;
+  rule();
+
+  text('Detail Pesanan', left, 12, 'bold');
+  y += 7;
+  row('Produk', order.product_type || '-');
+  row('Frame', order.frame_type || '-');
+  row('Ukuran', order.size || '-');
+  y += 2;
+  rule();
+
+  text('Rincian Harga', left, 12, 'bold');
+  y += 7;
+  getPriceRows(order).forEach(([label, v]) => row(label, formatRupiah(v)));
+  y += 2;
+  rule();
+
+  text('Total Pembayaran', left, 12, 'bold');
+  y += 7;
+  getPaymentRows(order).forEach(([label, v], i) =>
+    row(label, formatRupiah(v), i === 0)
+  );
+  y += 2;
+  rule();
+
+  text('Metode Pembayaran', left, 12, 'bold');
+  y += 7;
+  row('Bank Syariah Indonesia (BSI)', '4386683570');
+  row('SeaBank', '08977340266');
+  text('Atas Nama: Puji Alimin', left, 10);
+  y += 10;
+  rule();
+
+  text('Tracking Pesanan', left, 12, 'bold');
+  y += 7;
+  doc.setTextColor(0, 0, 200);
+  doc.textWithLink(getTrackingLink(order), left, y, {
+    url: getTrackingLink(order),
+  });
+  doc.setTextColor(0, 0, 0);
+  y += 14;
+  text('Your memories, made timeless.', left, 10, 'italic');
+
+  return doc.output('blob');
+};
+
+const handleInvoice = async (order) => {
+  const number = normalizeWhatsapp(order.whatsapp);
+  if (!number) {
+    alert('Nomor WhatsApp pelanggan tidak tersedia.');
+    return;
+  }
+
+  try {
+    const blob = await buildInvoicePdf(order);
+    const fileName = `Invoice-${order.order_id || 'order'}.pdf`;
+    const file = new File([blob], fileName, { type: 'application/pdf' });
+    const message = buildWhatsAppMessage(order);
+
+    // HP: kirim PDF + teks langsung lewat menu share (pilih WhatsApp, lalu chat pelanggan)
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], text: message, title: fileName });
+      return;
+    }
+
+    // Desktop: unduh PDF, lalu buka chat WhatsApp berisi teks yang sama
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(a.href);
+
+    window.open(
+      `https://wa.me/${number}?text=${encodeURIComponent(message)}`,
+      '_blank',
+      'noopener,noreferrer'
+    );
+    alert('PDF sudah terunduh. Lampirkan file PDF tersebut di chat WhatsApp.');
+  } catch (err) {
+    if (err?.name !== 'AbortError') {
+      alert('Gagal membuat invoice: ' + (err.message || 'unknown error'));
+    }
+  }
 };
   
   const statusCounts = {
@@ -347,6 +476,7 @@ Terima kasih telah mempercayakan momen spesial Anda kepada *@aishart.id*.
 <th>Order Status</th>
 <th>Tracking</th>
 <th>WhatsApp</th>
+                      <th>Invoice</th>
                     </tr>
                   </thead>
 
@@ -419,12 +549,22 @@ Terima kasih telah mempercayakan momen spesial Anda kepada *@aishart.id*.
     WhatsApp
   </button>
 </td>
+                        <td className="admin-action-cell">
+  <button
+    type="button"
+    className="admin-action-button whatsapp-action-button"
+    title="Kirim Invoice PDF + Tracking"
+    onClick={() => handleInvoice(order)}
+  >
+    Invoice PDF
+  </button>
+</td>
                       </tr>
                     ))}
 
                     {orders.length === 0 && (
                       <tr>
-                        <td colSpan="26">No orders found.</td>
+                        <td colSpan="27">No orders found.</td>
                       </tr>
                     )}
                   </tbody>
