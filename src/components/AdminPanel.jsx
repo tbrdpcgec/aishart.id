@@ -151,11 +151,11 @@ ${paymentDetails.join('\n') || '-'}
 ━━━━━━━━━━━━━━━━━━
 
 *1. Bank Syariah Indonesia (BSI)*
-No. Rekening: `4386683570`
+No. Rekening: \`4386683570\`
 Atas Nama: *Puji Alimin*
 
 *2. SeaBank*
-No. Rekening: `08977340266`
+No. Rekening: \`08977340266\`
 Atas Nama: *Puji Alimin*
 
 ━━━━━━━━━━━━━━━━━━
