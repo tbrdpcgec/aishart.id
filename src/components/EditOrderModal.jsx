@@ -5,9 +5,9 @@ const STATUS_OPTIONS = {
   express_status: ['N/A', 'Pending', 'Approved'],
   payment_status: ['Waiting Payment', 'DP 50%', 'Completed 100%'],
   order_status: [
-    'Waiting Approval',
+    'Waiting Payment',
     'In Production',
-    'Printing Process',
+    'Printing',
     'Packing',
     'On Delivery',
     'Completed',
