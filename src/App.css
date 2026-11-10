@@ -2305,3 +2305,14 @@ h2 span {
   opacity: 1;
   text-decoration: underline;
 }
+
+.invoice-action-button {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.invoice-action-button:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
