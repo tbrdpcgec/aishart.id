@@ -1004,25 +1004,24 @@ export default function Order({ initialProduct = '' }) {
               </div>
 
               {deliveryMethod === 'PICKUP' && (
-                <div className="express-request">
-                  <h4>📍 Alamat Pengambilan Pesanan</h4>
+  <div className="express-request">
+    <h4>📍 Alamat Pengambilan Pesanan</h4>
 
-                  <p>{pickupAddress || 'Alamat pengambilan belum tersedia.'}</p>
+    <p>{pickupAddress || 'Alamat pengambilan belum tersedia.'}</p>
 
-                  {pickupMapsUrl && (
-                    <a
-                      href={pickupMapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="button button-maps"
-                    >
-                      <span></span>
-                      Buka di Google Maps
-                      <span>↗</span>
-                    </a>
-                  )}
-                </div>
-              )}
+    {pickupMapsUrl && (
+      <a
+        href={pickupMapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="maps-link"
+      >
+        Buka di Google Maps ↗
+      </a>
+    )}
+  </div>
+)}
+
 
               {deliveryMethod === 'DELIVERY' && (
                 <div className="express-request">
