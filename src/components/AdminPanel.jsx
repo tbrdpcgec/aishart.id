@@ -191,84 +191,162 @@ const handleWhatsApp = (order) => {
   window.open(url, '_blank', 'noopener,noreferrer');
 };
 
-  const buildInvoicePdf = async (order) => {
+const buildInvoicePdf = async (order) => {
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const left = 20;
-  const right = 190;
-  let y = 22;
 
-  const text = (str, x, size = 11, style = 'normal', align = 'left') => {
-    doc.setFont('helvetica', style);
-    doc.setFontSize(size);
-    doc.text(String(str ?? '-'), x, y, { align });
+  // ===== Tema (samakan dengan CSS web kamu) =====
+  const THEME = {
+    bg: [255, 248, 241],     // krem latar halaman
+    card: [255, 255, 255],   // kartu putih
+    line: [232, 213, 196],   // garis/border lembut
+    brand: [155, 98, 71],    // cokelat utama (warna tombol Login)
+    dark: [74, 48, 36],      // cokelat tua untuk teks
+    muted: [140, 115, 100],  // teks sekunder
   };
-  const row = (label, value, bold = false) => {
-    text(label, left, 11, bold ? 'bold' : 'normal');
-    text(value, right, 11, bold ? 'bold' : 'normal', 'right');
+  const FONT_HEADING = 'times';     // serif, mirip judul "Admin Login"
+  const FONT_BODY = 'helvetica';    // sans-serif untuk isi
+
+  const W = 210, H = 297, L = 20, R = 190, ROW = 6.8;
+  let y = 0;
+
+  const txt = (s, x, o = {}) => {
+    const { size = 10.5, style = 'normal', font = FONT_BODY, color = THEME.dark, align = 'left' } = o;
+    doc.setFont(font, style);
+    doc.setFontSize(size);
+    doc.setTextColor(...color);
+    doc.text(String(s ?? '-'), x, y, { align });
+  };
+
+  const row = (label, value, o = {}) => {
+    txt(label, L + 6, { color: o.labelColor || THEME.muted, style: o.bold ? 'bold' : 'normal' });
+    txt(value, R - 6, { align: 'right', style: o.bold ? 'bold' : 'normal', color: o.color || THEME.dark });
+    y += ROW;
+  };
+
+  const drawCard = (height) => {
+    doc.setFillColor(...THEME.card);
+    doc.setDrawColor(...THEME.line);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(L, y, R - L, height, 3, 3, 'FD');
+  };
+
+  const cardTitle = (title) => {
+    y += 8;
+    txt(title.toUpperCase(), L + 6, { size: 8.5, style: 'bold', color: THEME.brand });
     y += 7;
   };
-  const rule = () => {
-    doc.setDrawColor(200);
-    doc.line(left, y, right, y);
-    y += 8;
+
+  const simpleCard = (title, rows) => {
+    const top = y;
+    const h = 8 + 7 + rows.length * ROW + 2;
+    drawCard(h);
+    cardTitle(title);
+    rows.forEach(([l, v]) => row(l, v));
+    y = top + h + 6;
   };
 
-  text('aishart.id', left, 20, 'bold');
+  // ===== Latar halaman =====
+  doc.setFillColor(...THEME.bg);
+  doc.rect(0, 0, W, H, 'F');
+
+  // ===== Header =====
+  y = 28;
+  txt('@aishart.id', L, { size: 26, style: 'bold', font: FONT_HEADING, color: THEME.brand });
+  txt('INVOICE', R, { size: 9, style: 'bold', color: THEME.brand, align: 'right' });
   y += 7;
-  text('INVOICE', left, 12);
-  text(`Order ID: ${order.order_id || '-'}`, right, 11, 'normal', 'right');
+  txt('Your memories, made timeless.', L, { size: 10, style: 'italic', font: FONT_HEADING, color: THEME.muted });
+  txt(order.order_id || '-', R, { size: 15, style: 'bold', font: FONT_HEADING, align: 'right' });
   y += 6;
-  text(`Tanggal: ${order.order_date || '-'}`, right, 11, 'normal', 'right');
-  y += 8;
-  rule();
+  txt(order.order_date || '-', R, { size: 9.5, color: THEME.muted, align: 'right' });
+  y += 5;
+  doc.setDrawColor(...THEME.brand);
+  doc.setLineWidth(0.6);
+  doc.line(L, y, R, y);
+  y += 9;
 
-  text('Customer', left, 12, 'bold');
-  y += 7;
-  row('Nama', order.customer_name || '-');
-  row('WhatsApp', order.whatsapp || '-');
-  y += 2;
-  rule();
+  // ===== Customer & Pesanan =====
+  simpleCard('Customer', [
+    ['Nama', order.customer_name || '-'],
+    ['WhatsApp', order.whatsapp || '-'],
+  ]);
 
-  text('Detail Pesanan', left, 12, 'bold');
-  y += 7;
-  row('Produk', order.product_type || '-');
-  row('Frame', order.frame_type || '-');
-  row('Ukuran', order.size || '-');
-  y += 2;
-  rule();
+  simpleCard('Pesanan', [
+    ['Produk', order.product_type || '-'],
+    ['Frame', order.frame_type || '-'],
+    ['Ukuran', order.size || '-'],
+  ]);
 
-  text('Rincian Harga', left, 12, 'bold');
-  y += 7;
-  getPriceRows(order).forEach(([label, v]) => row(label, formatRupiah(v)));
-  y += 2;
-  rule();
+  // ===== Rincian harga =====
+  const priceRows = [
+    ['Base price', order.base_price, false],
+    ['Additional face', order.face_fee, false],
+    ['Theme fee', order.theme_fee, false],
+    ['Other fee', order.other_fee, false],
+    ['Express fee', order.express_fee, false],
+    ['Delivery fee', order.delivery_fee, false],
+    ['Discount', order.discount, true],
+  ].filter(([, v]) => getPriceNumber(v) > 0);
 
-  text('Total Pembayaran', left, 12, 'bold');
-  y += 7;
-  getPaymentRows(order).forEach(([label, v], i) =>
-    row(label, formatRupiah(v), i === 0)
+  const hasDp = getPriceNumber(order.dp_paid) > 0;
+  const hasRemaining = getPriceNumber(order.remaining_payment) > 0;
+  const extraRows = (hasDp ? 1 : 0) + (hasRemaining ? 1 : 0);
+
+  const priceTop = y;
+  const priceH = 8 + 7 + priceRows.length * ROW + 3 + 11 + 3 + extraRows * ROW + 2;
+  drawCard(priceH);
+  cardTitle('Rincian harga');
+
+  priceRows.forEach(([label, v, isDiscount]) =>
+    row(label, `${isDiscount ? '- ' : ''}${formatRupiah(v)}`)
   );
-  y += 2;
-  rule();
 
-  text('Metode Pembayaran', left, 12, 'bold');
-  y += 7;
-  row('Bank Syariah Indonesia (BSI)', '4386683570');
-  row('SeaBank', '08977340266');
-  text('Atas Nama: Puji Alimin', left, 10);
-  y += 10;
-  rule();
-
-  text('Tracking Pesanan', left, 12, 'bold');
-  y += 7;
-  doc.setTextColor(0, 0, 200);
-  doc.textWithLink(getTrackingLink(order), left, y, {
-    url: getTrackingLink(order),
+  // Baris Total (disorot)
+  y += 1;
+  doc.setFillColor(...THEME.brand);
+  doc.roundedRect(L + 4, y - 1, R - L - 8, 11, 2, 2, 'F');
+  y += 6.2;
+  txt('Total', L + 8, { style: 'bold', color: [255, 255, 255], size: 11 });
+  txt(formatRupiah(order.final_total), R - 8, {
+    style: 'bold', color: [255, 255, 255], size: 11, align: 'right',
   });
-  doc.setTextColor(0, 0, 0);
-  y += 14;
-  text('Your memories, made timeless.', left, 10, 'italic');
+  y += 8.5;
+
+  if (hasDp) row('DP dibayar', formatRupiah(order.dp_paid));
+  if (hasRemaining) {
+    row('Sisa pembayaran', formatRupiah(order.remaining_payment), {
+      bold: true, color: THEME.brand, labelColor: THEME.dark,
+    });
+  }
+  y = priceTop + priceH + 6;
+
+  // ===== Metode pembayaran =====
+  simpleCard('Metode pembayaran', [
+    ['Bank Syariah Indonesia (BSI)', '4386683570'],
+    ['SeaBank', '08977340266'],
+    ['Atas nama', 'Puji Alimin'],
+  ]);
+
+  // ===== Lacak pesanan =====
+  const trackTop = y;
+  const trackH = 8 + 7 + 6 + 2;
+  drawCard(trackH);
+  cardTitle('Lacak pesanan');
+  const link = getTrackingLink(order);
+  doc.setFont(FONT_BODY, 'normal');
+  doc.setFontSize(10.5);
+  doc.setTextColor(...THEME.brand);
+  doc.textWithLink('Klik di sini untuk melacak progres pesanan', L + 6, y, { url: link });
+  y = trackTop + trackH + 6;
+
+  // ===== Penutup =====
+  y = H - 22;
+  doc.setDrawColor(...THEME.line);
+  doc.setLineWidth(0.3);
+  doc.line(L, y - 8, R, y - 8);
+  txt('Making ordinary moments feel extraordinary.', W / 2, {
+    size: 10.5, style: 'italic', font: FONT_HEADING, color: THEME.muted, align: 'center',
+  });
 
   return doc.output('blob');
 };
@@ -549,10 +627,10 @@ const handleInvoice = async (order) => {
     WhatsApp
   </button>
 </td>
-                        <td className="admin-action-cell">
+                      <td className="admin-action-cell">
   <button
     type="button"
-    className="admin-action-button whatsapp-action-button"
+    className="admin-action-button invoice-action-button"
     title="Kirim Invoice PDF + Tracking"
     onClick={() => handleInvoice(order)}
   >
