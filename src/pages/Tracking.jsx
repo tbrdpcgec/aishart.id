@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { fetchOrderTracking } from '../services/tracking';
 
 const TRACKING_STEPS = [
-  { label: 'Down Payment', icon: 'wallet' },
+  { label: 'Waiting Payment', icon: 'clock' },
   { label: 'In Production', icon: 'palette' },
+  { label: 'Printing', icon: 'printer' },
   { label: 'Packing', icon: 'package' },
   { label: 'On Delivery', icon: 'truck' },
   { label: 'Completed', icon: 'check' },
@@ -15,13 +16,15 @@ function getProgressIndex(status) {
     .toLowerCase();
 
   const statusMap = {
-    'dp confirmed': 0,
-    'down payment confirmed': 0,
-    'in production': 1,
-    packing: 2,
-    'on delivery': 3,
-    completed: 4,
-  };
+  'waiting payment': 0,
+  'dp confirmed': 0,
+  'down payment confirmed': 0,
+  'in production': 1,
+  printing: 2,
+  packing: 3,
+  'on delivery': 4,
+  completed: 5,
+};
 
   return statusMap[normalized] ?? -1;
 }
@@ -70,6 +73,19 @@ function StepIcon({ type }) {
         <path d="m8 12 3 3 5-6" />
       </>
     ),
+    clock: (
+  <>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 2" />
+  </>
+),
+printer: (
+  <>
+    <path d="M6 9V3h12v6" />
+    <rect x="3" y="9" width="18" height="8" rx="2" />
+    <path d="M6 14h12v7H6z" />
+  </>
+),
   };
 
   return <svg {...common}>{paths[type]}</svg>;
