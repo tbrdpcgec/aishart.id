@@ -752,20 +752,32 @@ button {
   color: white;
 }
 
+/* Kartu mengikuti lebar kartu di atasnya */
+.form-group {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .quantity-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  width: 100%;
+}
+
+.quantity-control {
+  flex-shrink: 0; /* kontrol +/- tidak ikut mengecil */
 }
 
 .quantity-note {
+  flex: 1;          /* teks mengisi sisa ruang di kanan */
   margin: 0;
   font-size: 0.85rem;
+  font-style: italic;
   color: #6b7280;
   line-height: 1.4;
 }
 
-/* Opsional: di layar kecil, teks pindah ke bawah */
 @media (max-width: 480px) {
   .quantity-row {
     flex-direction: column;
