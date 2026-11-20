@@ -557,9 +557,10 @@ export default function Order({ initialProduct = '' }) {
               </div>
             </div>
            <div className="quantity-row">
-  <div className="form-group">
-    <label>Jumlah Wajah</label>
+ <div className="form-group">
+  <label>Jumlah Wajah</label>
 
+  <div className="quantity-row">
     <div className="quantity-control">
       <button
         type="button"
@@ -582,7 +583,12 @@ export default function Order({ initialProduct = '' }) {
         +
       </button>
     </div>
+
+    <p className="quantity-note">
+      Ada tambahan 30rb per wajah (potongan harga untuk wajah lebih banyak)
+    </p>
   </div>
+</div>
 </div>
 
             {/* Pilihan tema */}
