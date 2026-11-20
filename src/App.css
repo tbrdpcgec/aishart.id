@@ -2318,11 +2318,20 @@ h2 span {
 }
 
 
+.order-form > .form-group,
+.form-group {
+  width: 100%;
+  max-width: none;
+  align-self: stretch;
+  box-sizing: border-box;
+}
+
 .quantity-row {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   gap: 16px;
+  width: 100%;
 }
 
 .quantity-control {
@@ -2338,7 +2347,6 @@ h2 span {
   color: var(--muted);
   line-height: 1.5;
 }
-
 @media (max-width: 480px) {
   .quantity-row {
     flex-direction: column;
