@@ -2316,3 +2316,22 @@ h2 span {
   background: #1d4ed8;
   border-color: #1d4ed8;
 }
+
+
+
+.quantity-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.quantity-note {
+  flex: 1 1 180px;
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.5;
+}
