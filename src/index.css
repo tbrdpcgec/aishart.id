@@ -751,3 +751,25 @@ button {
   background: #a96d4f;
   color: white;
 }
+
+.quantity-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantity-note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* Opsional: di layar kecil, teks pindah ke bawah */
+@media (max-width: 480px) {
+  .quantity-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
