@@ -555,3 +555,36 @@
 .artwork-showcase {
   box-shadow: 0 4px 18px rgba(73, 56, 46, 0.06);
 }
+
+
+/* Rata tengah semua informasi frame */
+.frame-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.frame-description {
+  margin: 0 0 14px;
+  text-align: center;
+}
+
+.frame-detail-item {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.size-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;  /* pill ukuran di tengah */
+  gap: 8px;
+}
+
+.frame-price-button {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
