@@ -4,7 +4,7 @@
 
 .collection-page {
   padding: 70px 5%;
-  background: var(--background, #faf8f5);
+  background: #e9e0d5; /* sebelumnya var(--background, #faf8f5) */
   color: var(--text, #49382e);
 }
 
@@ -55,7 +55,7 @@
   grid-template-columns: minmax(0, 1fr);
   min-width: 0;
   padding: 14px;
-  background: #e9e0d5;
+  background: #ffffff; /* sebelumnya #e9e0d5 */
   border: 1px solid rgba(120, 90, 70, 0.1);
   border-radius: 18px;
   box-sizing: border-box;
@@ -118,9 +118,9 @@
   align-items: center;
   width: 48px;
   height: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(120, 90, 70, 0.2);   /* sebelumnya putih */
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
+  background: #f7f5f1;                         /* sebelumnya rgba putih */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: #49382e;
@@ -242,6 +242,11 @@
 
 .size-showcase {
   min-width: 0;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(120, 90, 70, 0.1);
+  border-radius: 18px;
+  box-sizing: border-box;
 }
 
 .size-showcase > img {
@@ -259,8 +264,12 @@
 
 .artwork-showcase {
   margin-top: 30px;
-  padding-top: 30px;
-  border-top: 1px solid rgba(73, 56, 46, 0.15);
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid rgba(120, 90, 70, 0.1);
+  border-radius: 18px;
+  box-sizing: border-box;
+  /* border-top lama dihapus */
 }
 
 .artwork-heading {
@@ -513,10 +522,12 @@
 }
 
 .size-showcase {
-  background: #e9e0d5;
+  min-width: 0;
   padding: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(120, 90, 70, 0.1);
   border-radius: 18px;
-  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .size-guide-images {
