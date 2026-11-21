@@ -556,13 +556,13 @@ export default function Order({ initialProduct = '' }) {
                 ))}
               </div>
             </div>
-           <div className="quantity-row">
- <div className="form-group">
+           <div className="form-group">
   <label>Jumlah Wajah</label>
 
   <div className="quantity-row">
     <div className="quantity-control">
-      <button
+
+<button
         type="button"
         aria-label="Kurangi jumlah wajah"
         onClick={() =>
@@ -582,13 +582,13 @@ export default function Order({ initialProduct = '' }) {
       >
         +
       </button>
-    </div>
+
+</div>
 
     <p className="quantity-note">
       Ada tambahan 30rb per wajah (potongan harga untuk wajah lebih banyak)
     </p>
   </div>
-</div>
 </div>
 
             {/* Pilihan tema */}
