@@ -695,7 +695,7 @@ export default function Order({ initialProduct = '' }) {
             )}
 
             <div className="summary-total">
-              <span>Estimated Total</span>
+              <span>Estimated Total (Harga Estimasi bukan harga Fix)</span>
               <strong>{formatRupiah(estimatedTotal)}</strong>
             </div>
 
@@ -830,7 +830,7 @@ export default function Order({ initialProduct = '' }) {
             </button>
 
             <p className="summary-note">
-              Your final order details will be confirmed before submission.
+              Final order akan diinformasikan sebelum pembayaran
             </p>
           </aside>
         </div>
