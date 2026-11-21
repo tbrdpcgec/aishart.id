@@ -2336,4 +2336,42 @@ h2 span {
 
 
 
+.form-group .quantity-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.form-group .quantity-row .quantity-control {
+  flex: 0 0 auto;      /* jangan melebar, jangan mengecil */
+  width: auto;
+  max-width: none;
+}
+
+.form-group .quantity-row .quantity-control button {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+}
+
+.form-group .quantity-row .quantity-note {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .form-group .quantity-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
 
