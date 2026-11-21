@@ -2270,13 +2270,30 @@ h2 span {
 
 .quantity-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
 }
 
-.quantity-row .form-group {
-  flex: 1;
-  max-width: 220px;
+.quantity-control {
+  flex-shrink: 0;
+}
+
+.quantity-note {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .quantity-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
 
 
