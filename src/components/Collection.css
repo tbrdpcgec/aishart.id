@@ -4,7 +4,7 @@
 
 .collection-page {
   padding: 70px 5%;
-  background: #e9e0d5; /* sebelumnya var(--background, #faf8f5) */
+  background: #faf8f5; /* sebelumnya #e9e0d5 */
   color: var(--text, #49382e);
 }
 
@@ -548,4 +548,10 @@
   width: 100%;
   height: auto;
   object-fit: contain;
+}
+
+.frame-showcase,
+.size-showcase,
+.artwork-showcase {
+  box-shadow: 0 4px 18px rgba(73, 56, 46, 0.06);
 }
