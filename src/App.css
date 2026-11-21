@@ -2318,39 +2318,4 @@ h2 span {
 }
 
 
-.order-form > .form-group,
-.form-group {
-  width: 100%;
-  max-width: none;
-  align-self: stretch;
-  box-sizing: border-box;
-}
 
-.quantity-row {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-}
-
-.quantity-control {
-  flex-shrink: 0;
-}
-
-.quantity-note {
-  flex: 1 1 0;
-  min-width: 0;
-  margin: 0;
-  font-size: 12px;
-  font-style: italic;
-  color: var(--muted);
-  line-height: 1.5;
-}
-@media (max-width: 480px) {
-  .quantity-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-}
