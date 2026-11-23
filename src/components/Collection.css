@@ -265,13 +265,12 @@
 ======================================== */
 
 .artwork-showcase {
-  margin-top: 30px;
-  padding: 30px;
+  margin-top: 0;
+  padding: 18px 30px 50px;  /* atas 18px, samping 30px, bawah 50px */
   background: #ffffff;
   border: 1px solid rgba(120, 90, 70, 0.1);
   border-radius: 18px;
   box-sizing: border-box;
-  /* border-top lama dihapus */
 }
 
 .artwork-heading {
@@ -476,7 +475,7 @@
   }
 
   .artwork-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
   }
 }
