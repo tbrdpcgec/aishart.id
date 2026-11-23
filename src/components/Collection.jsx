@@ -67,6 +67,25 @@ export default function Collection() {
 
   const currentFrame = frames[frameIndex];
 
+  const sizeOptions =
+  currentFrame?.size_info
+    ?.split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => {
+      // contoh: "21x30 (Start from Rp.100.000)"
+      const m = s.match(/^(.+?)\s*\((.*)\)\s*$/);
+      if (!m) return { label: s, note: '', price: '' };
+
+      // "Start from Rp.100.000" -> note + price
+      const p = m[2].match(/^(.*?)\s*(Rp\.?\s*[\d.]+)\s*$/i);
+      return {
+        label: m[1],
+        note: p ? p[1] : m[2],
+        price: p ? p[2] : '',
+      };
+    }) || [];
+  
   const filteredArtworks =
     category === 'ALL'
       ? artworks
@@ -158,33 +177,27 @@ export default function Collection() {
 
               {/* FRAME INFORMATION */}
 
-              <div className="frame-details">
-                <p className="frame-description">{currentFrame.description}</p>
+            <div className="frame-details">
+  <p className="frame-description">{currentFrame.description}</p>
 
-                <div className="frame-detail-item">
-                  <span></span>
+  <div className="size-options">
+    {sizeOptions.map((size, index) => (
+      <div className="size-card" key={index}>
+        <strong className="size-card-label">{size.label}</strong>
+        {size.note && <span className="size-card-note">{size.note}</span>}
+        {size.price && <span className="size-card-price">{size.price}</span>}
+      </div>
+    ))}
+  </div>
 
-                  <div className="size-pills">
-                    {currentFrame.size_info
-                      ?.split(',')
-                      .map((size) => size.trim())
-                      .filter(Boolean)
-                      .map((size, index) => (
-                        <span className="size-pill" key={index}>
-                          {size}
-                        </span>
-                      ))}
-                  </div>
-                </div>
-
-                <a href="#order" className="frame-price-button">
-                  <span>Starting From</span>
-                  <strong>
-                    {formattedPrice ? `Rp ${formattedPrice}` : 'Contact us'}
-                  </strong>
-                  <span className="price-arrow">↗</span>
-                </a>
-              </div>
+  <a href="#order" className="frame-price-button">
+    <span>Starting From</span>
+    <strong>
+      {formattedPrice ? `Rp ${formattedPrice}` : 'Contact us'}
+    </strong>
+    <span className="price-arrow">↗</span>
+  </a>
+</div>
             </>
           )}
         </div>
