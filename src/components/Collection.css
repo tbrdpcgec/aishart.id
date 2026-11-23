@@ -665,18 +665,37 @@
   white-space: nowrap;
 }
 
-.frame-tagline {
-  margin: 0 0 8px;
+.frame-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 4px 0 10px;
+}
+
+.frame-keywords span {
+  position: relative;
+  padding: 0 12px;
   font-family: Georgia, serif;
-  font-size: 16px;
+  font-size: 15px;
   font-style: italic;
-  line-height: 1.5;
-  text-align: center;
   color: var(--text, #49382e);
 }
 
+/* garis pemisah antar kata */
+.frame-keywords span + span::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 14px;
+  background: rgba(183, 123, 96, 0.5);
+  transform: translateY(-50%);
+}
+
 .frame-suitable {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   font-size: 12px;
   text-align: center;
   color: var(--muted, #8a7a70);
