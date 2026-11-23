@@ -692,8 +692,8 @@
   color: var(--accent, #b77b60);
   font-family: inherit;
   font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
+  font-style: italic;
+  font-weight: 400;
   letter-spacing: 0.2px;
   line-height: 1.5;
   text-align: center;
