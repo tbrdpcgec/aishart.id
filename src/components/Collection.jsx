@@ -139,7 +139,7 @@ const sizeOptions =
 
   return (
     <section className="collection-page" id="collection">
-      <div className="collection-top">
+    
 
 
          {/* ARTWORK COLLECTION */}
@@ -307,7 +307,7 @@ const sizeOptions =
         </div>
 
       
-      </div>
+     
     </section>
   );
 }
