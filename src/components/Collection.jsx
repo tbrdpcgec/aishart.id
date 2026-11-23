@@ -215,7 +215,6 @@ const sizeOptions =
             ))}
           </div>
         </div>
-      </div>
 
 
 
@@ -307,6 +306,7 @@ const sizeOptions =
         </div>
  </div>
       
+      </div>
      
     </section>
   );
