@@ -712,7 +712,7 @@
 
 .collection-top {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;  /* frame kiri, size guide kanan */
+  grid-template-columns: 0.9fr 1.1fr;  /* size guide kiri, frame kanan */
   gap: 30px;
   align-items: start;
   min-width: 0;
@@ -720,6 +720,11 @@
 
 @media (max-width: 768px) {
   .collection-top {
-    grid-template-columns: 1fr;  /* di HP jadi tersusun ke bawah */
+    grid-template-columns: 1fr;
+  }
+
+  /* di HP: frame tampil dulu, baru size guide */
+  .frame-showcase {
+    order: -1;
   }
 }
