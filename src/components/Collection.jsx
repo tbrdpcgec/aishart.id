@@ -67,15 +67,19 @@ export default function Collection() {
 
   const currentFrame = frames[frameIndex];
 
-  const sizeOptions =
+const sizeOptions =
   currentFrame?.size_info
     ?.split(',')
     .map((s) => s.trim())
     .filter(Boolean)
     .map((s) => {
+      // tanda * di depan = best seller
+      const isBestSeller = s.startsWith('*');
+      const clean = s.replace(/^\*\s*/, '');
+
       // contoh: "21x30 (Start from Rp.100.000)"
-      const m = s.match(/^(.+?)\s*\((.*)\)\s*$/);
-      if (!m) return { label: s, note: '', price: '' };
+      const m = clean.match(/^(.+?)\s*\((.*)\)\s*$/);
+      if (!m) return { label: clean, note: '', price: '', isBestSeller };
 
       // "Start from Rp.100.000" -> note + price
       const p = m[2].match(/^(.*?)\s*(Rp\.?\s*[\d.]+)\s*$/i);
@@ -83,6 +87,7 @@ export default function Collection() {
         label: m[1],
         note: p ? p[1] : m[2],
         price: p ? p[2] : '',
+        isBestSeller,
       };
     }) || [];
   
@@ -180,23 +185,26 @@ export default function Collection() {
             <div className="frame-details">
   <p className="frame-description">{currentFrame.description}</p>
 
-  <div className="size-options">
-    {sizeOptions.map((size, index) => (
-      <div className="size-card" key={index}>
-        <strong className="size-card-label">{size.label}</strong>
-        {size.note && <span className="size-card-note">{size.note}</span>}
-        {size.price && <span className="size-card-price">{size.price}</span>}
-      </div>
-    ))}
-  </div>
+<div className="size-options">
+  {sizeOptions.map((size, index) => (
+    <div
+      className={`size-card ${size.isBestSeller ? 'best-seller' : ''}`}
+      key={index}
+    >
+      {size.isBestSeller && (
+        <span className="best-seller-badge">★ Best Seller</span>
+      )}
+      <strong className="size-card-label">{size.label}</strong>
+      {size.note && <span className="size-card-note">{size.note}</span>}
+      {size.price && <span className="size-card-price">{size.price}</span>}
+    </div>
+  ))}
+</div>
 
-  <a href="#order" className="frame-price-button">
-    <span>Starting From</span>
-    <strong>
-      {formattedPrice ? `Rp ${formattedPrice}` : 'Contact us'}
-    </strong>
-    <span className="price-arrow">↗</span>
-  </a>
+ <a href="#order" className="frame-price-button">
+  <span>Pesan Sekarang</span>
+  <span className="price-arrow">→</span>
+</a>
 </div>
             </>
           )}
