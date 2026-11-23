@@ -67,9 +67,12 @@ export default function Collection() {
 
   const currentFrame = frames[frameIndex];
 
-  const [tagline, suitableFor] = (currentFrame?.description || '')
+const keywords = (currentFrame?.keywords || '')
   .split('|')
-  .map((s) => s.trim());
+  .map((k) => k.trim())
+  .filter(Boolean);
+
+const suitableFor = currentFrame?.suitable_for;
   
 const sizeOptions =
   currentFrame?.size_info
@@ -187,7 +190,13 @@ const sizeOptions =
               {/* FRAME INFORMATION */}
 
             <div className="frame-details">
-  <p className="frame-tagline">{tagline}</p>
+  {keywords.length > 0 && (
+  <div className="frame-keywords">
+    {keywords.map((word, index) => (
+      <span key={index}>{word}</span>
+    ))}
+  </div>
+)}
 
 {suitableFor && (
   <p className="frame-suitable">
