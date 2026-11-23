@@ -220,7 +220,7 @@ const sizeOptions =
 
         {/* FRAME COLLECTION */}
 
-        <div className="frame-showcase">
+        <div className="frame-showcase" id="frame-collection">
           <div className="eyebrow">OUR FRAME COLLECTION</div>
 
           <h2>
