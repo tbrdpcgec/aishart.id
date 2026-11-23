@@ -140,6 +140,85 @@ const sizeOptions =
   return (
     <section className="collection-page" id="collection">
       <div className="collection-top">
+
+
+         {/* ARTWORK COLLECTION */}
+
+      <div className="artwork-showcase">
+        <div className="artwork-heading">
+          <div>
+            <div className="eyebrow">OUR ARTWORK</div>
+            <h2>
+              Made just for <span>you.</span>
+            </h2>
+          </div>
+
+          <div className="category-filter">
+            {['ALL', 'INDIVIDUAL', 'COUPLE', 'GROUP'].map((item) => (
+              <button
+                key={item}
+                className={category === item ? 'active' : ''}
+                onClick={() => changeCategory(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="artwork-grid">
+          {visibleArtworks.map((art) => (
+            <div className="artwork-card" key={art.artwork_id}>
+              <img src={art.image_url} alt={art.title} />
+            </div>
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="artwork-navigation">
+            <button
+              disabled={artPage === 0}
+              onClick={() => setArtPage(artPage - 1)}
+            >
+              ‹
+            </button>
+
+            <span>
+              {artPage + 1} / {totalPages}
+            </span>
+
+            <button
+              disabled={artPage >= totalPages - 1}
+              onClick={() => setArtPage(artPage + 1)}
+            >
+              ›
+            </button>
+          </div>
+        )}
+
+        
+
+        {/* SIZE GUIDE */}
+
+        <div className="size-showcase">
+          <div className="eyebrow">FIND YOUR PERFECT SIZE</div>
+
+          <h2>
+            Size <span>guide.</span>
+          </h2>
+
+          <div className="size-guide-images">
+            {sizes.map((size) => (
+              <div className="size-guide-item" key={size.size_id}>
+                <img src={size.image_url} alt={size.size_name} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+
+
         {/* FRAME COLLECTION */}
 
         <div className="frame-showcase">
@@ -227,78 +306,7 @@ const sizeOptions =
           )}
         </div>
 
-        {/* SIZE GUIDE */}
-
-        <div className="size-showcase">
-          <div className="eyebrow">FIND YOUR PERFECT SIZE</div>
-
-          <h2>
-            Size <span>guide.</span>
-          </h2>
-
-          <div className="size-guide-images">
-            {sizes.map((size) => (
-              <div className="size-guide-item" key={size.size_id}>
-                <img src={size.image_url} alt={size.size_name} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ARTWORK COLLECTION */}
-
-      <div className="artwork-showcase">
-        <div className="artwork-heading">
-          <div>
-            <div className="eyebrow">OUR ARTWORK</div>
-            <h2>
-              Made just for <span>you.</span>
-            </h2>
-          </div>
-
-          <div className="category-filter">
-            {['ALL', 'INDIVIDUAL', 'COUPLE', 'GROUP'].map((item) => (
-              <button
-                key={item}
-                className={category === item ? 'active' : ''}
-                onClick={() => changeCategory(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="artwork-grid">
-          {visibleArtworks.map((art) => (
-            <div className="artwork-card" key={art.artwork_id}>
-              <img src={art.image_url} alt={art.title} />
-            </div>
-          ))}
-        </div>
-
-        {totalPages > 1 && (
-          <div className="artwork-navigation">
-            <button
-              disabled={artPage === 0}
-              onClick={() => setArtPage(artPage - 1)}
-            >
-              ‹
-            </button>
-
-            <span>
-              {artPage + 1} / {totalPages}
-            </span>
-
-            <button
-              disabled={artPage >= totalPages - 1}
-              onClick={() => setArtPage(artPage + 1)}
-            >
-              ›
-            </button>
-          </div>
-        )}
+      
       </div>
     </section>
   );
