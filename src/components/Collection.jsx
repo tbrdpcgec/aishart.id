@@ -325,18 +325,17 @@ const sizeOptions =
 
 {lightbox && (
   <div className="lightbox" onClick={() => setLightbox(null)}>
-    <img
-      src={lightbox.image_url}
-      alt={lightbox.title}
-      onClick={(e) => e.stopPropagation()}
-    />
-    <button
-      className="lightbox-close"
-      onClick={() => setLightbox(null)}
-      aria-label="Tutup"
-    >
-      ×
-    </button>
+    <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+      <img src={lightbox.image_url} alt={lightbox.title} />
+
+      <button
+        className="lightbox-close"
+        onClick={() => setLightbox(null)}
+        aria-label="Tutup"
+      >
+        ×
+      </button>
+    </div>
   </div>
 )}
       
