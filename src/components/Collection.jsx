@@ -196,7 +196,7 @@ const sizeOptions =
           </div>
         )}
 
-        
+        <div className="collection-top">
 
         {/* SIZE GUIDE */}
 
@@ -305,7 +305,7 @@ const sizeOptions =
             </>
           )}
         </div>
-
+ </div>
       
      
     </section>
