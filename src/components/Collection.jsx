@@ -200,7 +200,8 @@ const sizeOptions =
 
 {suitableFor && (
   <p className="frame-suitable">
-    <span>Cocok untuk</span> {suitableFor}
+    <span className="suitable-label">🎁 Cocok untuk hadiah</span>
+    <span className="suitable-text">{suitableFor}</span>
   </p>
 )}
               
