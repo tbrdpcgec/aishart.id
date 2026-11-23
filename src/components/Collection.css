@@ -724,9 +724,12 @@
     grid-template-columns: 1fr;
   }
 
-  /* di HP: frame tampil dulu, baru size guide */
+  .size-showcase {
+    order: 0;
+  }
+
   .frame-showcase {
-    order: -1;
+    order: 1;   /* sebelumnya -1 */
   }
 }
 
@@ -735,3 +738,14 @@
   margin-top: 40px;
   margin-bottom: 60px;  /* jarak ke kotak size guide dan frame */
 }
+
+@media (max-width: 768px) {
+  .collection-page {
+    padding-top: 20px;   /* sebelumnya 70px */
+  }
+
+  .artwork-showcase {
+    padding-top: 18px;
+  }
+}
+
