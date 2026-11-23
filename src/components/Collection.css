@@ -3,7 +3,7 @@
 ======================================== */
 
 .collection-page {
-  padding: 70px 5%;
+  padding: 40px 5%;
   background: #faf8f5; /* sebelumnya #e9e0d5 */
   color: var(--text, #49382e);
 }
@@ -278,7 +278,7 @@
   justify-content: space-between;
   align-items: end;
   gap: 25px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .artwork-heading h2 {
@@ -706,7 +706,7 @@
 .collection-page {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 50px;
 }
 
 .collection-top {
