@@ -588,3 +588,53 @@
   justify-content: center;
   text-align: center;
 }
+
+.size-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin: 14px 0;
+}
+
+.size-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 12px 8px;
+  background: #fff;
+  border: 1px solid rgba(183, 123, 96, 0.4);
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.size-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(183, 123, 96, 0.15);
+}
+
+.size-card-label {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text, #49382e);
+}
+
+.size-card-note {
+  font-size: 10px;
+  color: var(--muted, #8a7a70);
+}
+
+.size-card-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent, #b77b60);
+}
+
+@media (min-width: 769px) {
+  .size-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
