@@ -700,3 +700,26 @@
   text-align: center;
   text-transform: none;
 }
+
+
+
+
+.collection-page {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.collection-top {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;  /* frame kiri, size guide kanan */
+  gap: 30px;
+  align-items: start;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .collection-top {
+    grid-template-columns: 1fr;  /* di HP jadi tersusun ke bawah */
+  }
+}
