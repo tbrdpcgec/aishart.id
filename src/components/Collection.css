@@ -109,7 +109,7 @@
   grid-template-columns: 48px minmax(0, 1fr) 48px;
   align-items: center;
   gap: 12px;
-  margin: 10px 0 4px;
+  margin: 10px 0 0px;
 }
 
 .frame-arrow {
@@ -146,10 +146,11 @@
   margin: 0;
   font-family: Georgia, serif;
   font-size: 25px;
-  font-weight: 500;
-  line-height: 1.4;
+  font-weight: 700;
+  line-height: 1.2;
   text-align: center;
   color: var(--text, #49382e);
+   letter-spacing: 0.3px;
 }
 
 /* ========================================
@@ -671,7 +672,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
-  margin: 6px 0 12px;
+  margin: 0px 0 12px;
 }
 
 .frame-keywords span {
