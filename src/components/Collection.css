@@ -3,7 +3,7 @@
 ======================================== */
 
 .collection-page {
-  padding: 70px 5%;
+  padding: 50px 5%;
   background: #faf8f5; /* sebelumnya #e9e0d5 */
   color: var(--text, #49382e);
 }
@@ -398,6 +398,7 @@
 @media (max-width: 768px) {
   .collection-page {
     padding: 45px 5%;
+     gap: 60px;
   }
 
   .collection-top {
@@ -457,6 +458,7 @@
   .artwork-showcase {
     margin-top: 65px;
     padding-top: 45px;
+       padding-bottom: 50px;
   }
 
   .artwork-heading {
