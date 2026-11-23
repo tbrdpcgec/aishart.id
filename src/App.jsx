@@ -149,9 +149,9 @@ useEffect(() => {
                   Create Your Art <span> ↗</span>
                 </button>
 
-                <a className="text-link" href="#collection">
-                  Explore Collection <span> ↓</span>
-                </a>
+               <a className="text-link" href="#frame-collection">
+  Price List <span> ↓</span>
+</a>
               </div>
             </div>
 
