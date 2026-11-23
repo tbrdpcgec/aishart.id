@@ -187,14 +187,14 @@ const sizeOptions =
               {/* FRAME INFORMATION */}
 
             <div className="frame-details">
-  <p className="<p className="frame-tagline">{tagline}</p>
+  <p className="frame-tagline">{tagline}</p>
 
 {suitableFor && (
   <p className="frame-suitable">
     <span>Cocok untuk</span> {suitableFor}
   </p>
-)}">{currentFrame.description}</p>
-
+)}
+              
 <div className="size-options">
   {sizeOptions.map((size, index) => (
     <div
