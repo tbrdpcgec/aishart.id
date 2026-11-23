@@ -14,6 +14,7 @@ export default function Collection() {
 
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [loading, setLoading] = useState(true);
+  const [lightbox, setLightbox] = useState(null);
 
   useEffect(() => {
     async function loadCollection() {
@@ -56,7 +57,7 @@ export default function Collection() {
 
   useEffect(() => {
     function updatePageSize() {
-      setItemsPerPage(window.innerWidth <= 768 ? 2 : 4);
+      setItemsPerPage(window.innerWidth <= 768 ? 3 : 4);
     }
 
     updatePageSize();
@@ -65,6 +66,16 @@ export default function Collection() {
     return () => window.removeEventListener('resize', updatePageSize);
   }, []);
 
+
+  useEffect(() => {
+  function handleKey(e) {
+    if (e.key === 'Escape') setLightbox(null);
+  }
+  window.addEventListener('keydown', handleKey);
+  return () => window.removeEventListener('keydown', handleKey);
+}, []);
+
+  
   const currentFrame = frames[frameIndex];
 
 const keywords = (currentFrame?.keywords || '')
@@ -166,13 +177,17 @@ const sizeOptions =
           </div>
         </div>
 
-        <div className="artwork-grid">
-          {visibleArtworks.map((art) => (
-            <div className="artwork-card" key={art.artwork_id}>
-              <img src={art.image_url} alt={art.title} />
-            </div>
-          ))}
-        </div>
+       <div className="artwork-grid">
+  {visibleArtworks.map((art) => (
+    <div
+      className="artwork-card"
+      key={art.artwork_id}
+      onClick={() => setLightbox(art)}
+    >
+      <img src={art.image_url} alt={art.title} />
+    </div>
+  ))}
+</div>
 
         {totalPages > 1 && (
           <div className="artwork-navigation">
@@ -307,7 +322,24 @@ const sizeOptions =
  </div>
       
       </div>
-     
+
+{lightbox && (
+  <div className="lightbox" onClick={() => setLightbox(null)}>
+    <img
+      src={lightbox.image_url}
+      alt={lightbox.title}
+      onClick={(e) => e.stopPropagation()}
+    />
+    <button
+      className="lightbox-close"
+      onClick={() => setLightbox(null)}
+      aria-label="Tutup"
+    >
+      ×
+    </button>
+  </div>
+)}
+      
     </section>
   );
 }
