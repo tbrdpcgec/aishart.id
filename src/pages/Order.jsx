@@ -695,7 +695,7 @@ export default function Order({ initialProduct = '' }) {
             )}
 
             <div className="summary-total">
-              <span>Estimated Total (Harga Estimasi bukan harga Fix)</span>
+              <span>Estimated Total (Harga Estimasi bukan harga Final)</span>
               <strong>{formatRupiah(estimatedTotal)}</strong>
             </div>
 
@@ -826,11 +826,11 @@ export default function Order({ initialProduct = '' }) {
                 }, 100);
               }}
             >
-              Continue to Order <span>↗</span>
+              Lanjutkan isi data.. <span>↗</span>
             </button>
 
             <p className="summary-note">
-              Final order akan diinformasikan sebelum pembayaran
+              Order mu akan diproses/dihitung ulang sebelum pembayaran
             </p>
           </aside>
         </div>
@@ -1141,7 +1141,7 @@ export default function Order({ initialProduct = '' }) {
                     ?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                ← Back to Selection
+                ← Kembali ke order
               </button>
 
               <button
@@ -1149,13 +1149,13 @@ export default function Order({ initialProduct = '' }) {
                 className="button button-dark"
                 disabled={submitting}
               >
-                {submitting ? 'Saving Order...' : 'Continue to WhatsApp'}
+                {submitting ? 'Menyimpan Order...' : 'Lanjutkan Order'}
                 {!submitting && <span> ↗</span>}
               </button>
             </div>
 
             <p className="summary-note">
-              Your order details will be reviewed before the payment process.
+              Pesanan mu akan diproses dan dihitung ulang sebelum pembayaran.
             </p>
           </form>
         </div>
