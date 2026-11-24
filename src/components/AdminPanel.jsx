@@ -644,6 +644,7 @@ const handleInvoice = async (order) => {
                         <td>{formatRupiah(order.discount)}</td>
                         <td>{formatRupiah(order.express_fee)}</td>
                         <td>{formatRupiah(order.delivery_fee)}</td>
+                        <td>{formatRupiah(order.estimated_total)}</td>
                         <td>
                           <strong>{formatRupiah(order.final_total)}</strong>
                         </td>
