@@ -92,6 +92,7 @@ const getPriceRows = (order) =>
     ['Discount', order.discount],
     ['Express Fee', order.express_fee],
     ['Delivery Fee', order.delivery_fee],
+    ['Estimated Total', order.estimated_total],
   ].filter(([, v]) => getPriceNumber(v) > 0);
 
 const getPaymentRows = (order) =>
@@ -303,6 +304,8 @@ txt(order.order_date || '-', R, { size: 9.5, color: THEME.muted, align: 'right' 
     ['Other fee', order.other_fee, false],
     ['Express fee', order.express_fee, false],
     ['Delivery fee', order.delivery_fee, false],
+    ['Estimated Total', order.estimated_total, false],
+    
     ['Discount', order.discount, true],
   ].filter(([, v]) => getPriceNumber(v) > 0);
 
@@ -594,6 +597,7 @@ const handleInvoice = async (order) => {
                       <th>Discount</th>
                       <th>Express Fee</th>
                       <th>Delivery Fee</th>
+                      <th>Estimated Total</th>
                       <th>Final Total</th>
 
                       <th>DP Paid</th>
