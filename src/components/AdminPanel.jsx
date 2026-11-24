@@ -127,6 +127,7 @@ Berikut detail konfirmasi pesanan Anda:
 
 🔖 Order ID:
 *${order.order_id || '-'}*
+`Status: ${order.order_status || '-'}`,
 
 ━━━━━━━━━━━━━━━━━━
 🖼️ *DETAIL PESANAN*
@@ -224,46 +225,61 @@ const buildInvoicePdf = async (order) => {
     y += ROW;
   };
 
-  const drawCard = (height) => {
-    doc.setFillColor(...THEME.card);
-    doc.setDrawColor(...THEME.line);
-    doc.setLineWidth(0.3);
-    doc.roundedRect(L, y, R - L, height, 3, 3, 'FD');
-  };
+  const GAP = 4; // jarak antar kartu (sebelumnya 6)
+  
+const drawCard = (height, x = L, w = R - L) => {
+  doc.setFillColor(...THEME.card);
+  doc.setDrawColor(...THEME.line);
+  doc.setLineWidth(0.3);
+  doc.roundedRect(x, y, w, height, 3, 3, 'FD');
+};
 
-  const cardTitle = (title) => {
-    y += 8;
-    txt(title.toUpperCase(), L + 6, { size: 8.5, style: 'bold', color: THEME.brand });
-    y += 7;
-  };
+ const cardTitle = (title, x = L + 6) => {
+  y += 7; // sebelumnya 8
+  txt(title.toUpperCase(), x, { size: 8.5, style: 'bold', color: THEME.brand });
+  y += 6.5; // sebelumnya 7
+};
 
-  const simpleCard = (title, rows) => {
-    const top = y;
-    const h = 8 + 7 + rows.length * ROW + 2;
-    drawCard(h);
-    cardTitle(title);
-    rows.forEach(([l, v]) => row(l, v));
-    y = top + h + 6;
-  };
+const simpleCard = (title, rows) => {
+  const top = y;
+  const h = 7 + 6.5 + rows.length * ROW + 2;
+  drawCard(h);
+  cardTitle(title);
+  rows.forEach(([l, v]) => row(l, v));
+  y = top + h + GAP;
+};
 
   // ===== Latar halaman =====
   doc.setFillColor(...THEME.bg);
   doc.rect(0, 0, W, H, 'F');
 
   // ===== Header =====
-  y = 28;
+  y = 18;
   txt('@aishart.id', L, { size: 26, style: 'bold', font: FONT_HEADING, color: THEME.brand });
   txt('INVOICE', R, { size: 9, style: 'bold', color: THEME.brand, align: 'right' });
   y += 7;
   txt('Your memories, made timeless.', L, { size: 10, style: 'italic', font: FONT_HEADING, color: THEME.muted });
-  txt(order.order_id || '-', R, { size: 15, style: 'bold', font: FONT_HEADING, align: 'right' });
-  y += 6;
-  txt(order.order_date || '-', R, { size: 9.5, color: THEME.muted, align: 'right' });
+txt(order.order_id || '-', R, { size: 15, style: 'bold', font: FONT_HEADING, align: 'right' });
+y += 6;
+
+// Status order (pill rata kanan)
+const status = String(order.order_status || '-').toUpperCase();
+doc.setFont(FONT_BODY, 'bold');
+doc.setFontSize(8);
+const pillW = doc.getTextWidth(status) + 8;
+const pillH = 5.2;
+doc.setFillColor(...THEME.line);                  // latar krem
+doc.roundedRect(R - pillW, y - 3.7, pillW, pillH, 2.6, 2.6, 'F');
+txt(status, R - pillW / 2, { size: 8, style: 'bold', color: THEME.brand, align: 'center' });
+y += 5.5;
+
+txt(order.order_date || '-', R, { size: 9.5, color: THEME.muted, align: 'right' });
+  
   y += 5;
   doc.setDrawColor(...THEME.brand);
   doc.setLineWidth(0.6);
   doc.line(L, y, R, y);
-  y += 9;
+  y += 7;
 
   // ===== Customer & Pesanan =====
   simpleCard('Customer', [
@@ -293,7 +309,7 @@ const buildInvoicePdf = async (order) => {
   const extraRows = (hasDp ? 1 : 0) + (hasRemaining ? 1 : 0);
 
   const priceTop = y;
-  const priceH = 8 + 7 + priceRows.length * ROW + 3 + 11 + 3 + extraRows * ROW + 2;
+  const priceH = 7 + 6.5 + priceRows.length * ROW + 3 + 11 + 3 + extraRows * ROW + 2;
   drawCard(priceH);
   cardTitle('Rincian harga');
 
@@ -318,27 +334,64 @@ const buildInvoicePdf = async (order) => {
       bold: true, color: THEME.brand, labelColor: THEME.dark,
     });
   }
-  y = priceTop + priceH + 6;
+  y = priceTop + priceH + GAP; // sebelumnya + 6
 
-  // ===== Metode pembayaran =====
-  simpleCard('Metode pembayaran', [
-    ['Bank Syariah Indonesia (BSI)', '4386683570'],
-    ['SeaBank', '08977340266'],
-    ['Atas nama', 'Puji Alimin'],
-  ]);
+  // ===== Metode pembayaran (kiri) + Lacak pesanan (kanan) =====
+const colW = (R - L - GAP) / 2;
+const x2 = L + colW + GAP;
+const ITEM = 11;
 
-  // ===== Lacak pesanan =====
-  const trackTop = y;
-  const trackH = 8 + 7 + 6 + 2;
-  drawCard(trackH);
-  cardTitle('Lacak pesanan');
-  const link = getTrackingLink(order);
-  doc.setFont(FONT_BODY, 'normal');
-  doc.setFontSize(10.5);
-  doc.setTextColor(...THEME.brand);
-  doc.textWithLink('Klik di sini untuk melacak progres pesanan', L + 6, y, { url: link });
-  y = trackTop + trackH + 6;
+const payItems = [
+  ['Bank Syariah Indonesia (BSI)', '4386683570'],
+  ['SeaBank', '08977340266'],
+  ['Atas nama', 'Puji Alimin'],
+];
 
+const colTop = y;
+const colH = 7 + 6.5 + payItems.length * ITEM + 1;
+
+// Kiri: metode pembayaran (label di atas, nilai di bawah agar muat)
+drawCard(colH, L, colW);
+cardTitle('Metode pembayaran', L + 6);
+payItems.forEach(([label, value]) => {
+  txt(label, L + 6, { size: 8.5, color: THEME.muted });
+  y += 4.5;
+  txt(value, L + 6, { size: 10.5, style: 'bold' });
+  y += 6.5;
+});
+
+// Kanan: lacak pesanan (tinggi sama dengan kartu kiri)
+y = colTop;
+drawCard(colH, x2, colW);
+cardTitle('Lacak pesanan', x2 + 6);
+
+doc.setFont(FONT_BODY, 'normal');
+doc.setFontSize(9.5);
+doc.setTextColor(...THEME.muted);
+const lines = doc.splitTextToSize(
+  'Klik tombol di bawah untuk melacak progres pesanan Anda.',
+  colW - 12
+);
+lines.forEach((line) => {
+  doc.text(line, x2 + 6, y);
+  y += 4.6;
+});
+
+// Tombol di bagian bawah kartu
+const link = getTrackingLink(order);
+const btnH = 10;
+const btnY = colTop + colH - btnH - 6;
+doc.setFillColor(...THEME.brand);
+doc.roundedRect(x2 + 6, btnY, colW - 12, btnH, 2, 2, 'F');
+y = btnY + 6.3;
+txt('Lacak Pesanan', x2 + colW / 2, {
+  size: 10, style: 'bold', color: [255, 255, 255], align: 'center',
+});
+doc.link(x2 + 6, btnY, colW - 12, btnH, { url: link });
+
+y = colTop + colH + GAP;
+
+  
   // ===== Penutup =====
   y = H - 22;
   doc.setDrawColor(...THEME.line);
