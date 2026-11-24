@@ -127,7 +127,9 @@ Berikut detail konfirmasi pesanan Anda:
 
 🔖 Order ID:
 *${order.order_id || '-'}*
-`Status: ${order.order_status || '-'}`,
+
+📍 Status:
+*${order.order_status || '-'}*
 
 ━━━━━━━━━━━━━━━━━━
 🖼️ *DETAIL PESANAN*
