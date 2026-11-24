@@ -112,9 +112,7 @@ const buildWhatsAppMessage = (order) => {
   const trackingLink = getTrackingLink(order);
 
   // SALIN template `message` lama kamu ke sini (mulai dari `Halo ${order.customer_name || ''},` sampai `❤️.`)
-  return `Halo ${order.customer_name || ''},
-
-🎨 *aishart.id | ORDER CONFIRMATION*
+  return `🎨 *aishart.id | ORDER CONFIRMATION*
 
 Halo *${order.customer_name || 'Customer'}*! 👋
 
