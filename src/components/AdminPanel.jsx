@@ -135,9 +135,9 @@ Berikut detail konfirmasi pesanan Anda:
 🖼️ *DETAIL PESANAN*
 ━━━━━━━━━━━━━━━━━━
 
-🎨 Produk: ${order.product_type || '-'}
-🖼️ Frame: ${order.frame_type || '-'}
-📐 Ukuran: ${order.size || '-'}
+• Produk: ${order.product_type || '-'}
+• Frame: ${order.frame_type || '-'}
+• Ukuran: ${order.size || '-'}
 
 ━━━━━━━━━━━━━━━━━━
 💰 *RINCIAN HARGA*
