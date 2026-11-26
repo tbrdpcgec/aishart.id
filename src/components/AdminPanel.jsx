@@ -98,7 +98,7 @@ const getPriceRows = (order) =>
 const getPaymentRows = (order) =>
   [
     ['Final Total', order.final_total],
-    ['DP Paid', order.dp_paid],
+    ['Paid', order.dp_paid],
     ['Remaining Payment', order.remaining_payment],
   ].filter(([, v]) => getPriceNumber(v) > 0);
 
@@ -331,7 +331,7 @@ txt(order.order_date || '-', R, { size: 9.5, color: THEME.muted, align: 'right' 
   });
   y += 8.5;
 
-  if (hasDp) row('DP dibayar', formatRupiah(order.dp_paid));
+  if (hasDp) row('Pembayaran', formatRupiah(order.dp_paid));
   if (hasRemaining) {
     row('Sisa pembayaran', formatRupiah(order.remaining_payment), {
       bold: true, color: THEME.brand, labelColor: THEME.dark,
