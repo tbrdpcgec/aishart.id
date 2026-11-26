@@ -585,7 +585,7 @@ export default function Order({ initialProduct = '' }) {
 </div>
 
     <p className="quantity-note">
-      Ada tambahan 30rb per wajah (potongan harga untuk wajah lebih banyak)
+      Estimasi tambahan harga per wajah Rp. 30.000, ada potongan harga untuk wajah lebih banyak dan ukuran lebih kecil (harga final akan dihitung admin sebelum pembayaran)
     </p>
   </div>
 </div>
@@ -694,7 +694,7 @@ export default function Order({ initialProduct = '' }) {
             )}
 
             <div className="summary-total">
-              <span>Estimated Total (Harga Estimasi bukan harga Final)</span>
+              <span>Estimated Total (Ini hanya harga Estimasi ya bukan harga Final)</span>
               <strong>{formatRupiah(estimatedTotal)}</strong>
             </div>
 
@@ -714,7 +714,7 @@ export default function Order({ initialProduct = '' }) {
               </div>
 
               <p className="summary-remark">
-                Produksi dimulai setelah pembayaran DP 50% diterima dan
+                Waktu produksi dihitung setelah pembayaran DP minimal 50% diterima dan
                 dikonfirmasi oleh admin. Sabtu dan Minggu tidak termasuk hari
                 kerja.
               </p>
@@ -792,12 +792,12 @@ export default function Order({ initialProduct = '' }) {
                         }
                         required
                       >
-                        <option value="">Select completion time</option>
-                        <option value="09:00">Before 09:00</option>
-                        <option value="12:00">Before 12:00</option>
-                        <option value="15:00">Before 15:00</option>
-                        <option value="18:00">Before 18:00</option>
-                        <option value="21:00">Before 21:00</option>
+                        <option value="">Pilih waktu permintaan</option>
+                        <option value="09:00">Sebelum jam 09:00</option>
+                        <option value="12:00">Sebelum jam 12:00</option>
+                        <option value="15:00">Sebelum jam 15:00</option>
+                        <option value="18:00">Sebelum jam 18:00</option>
+                        <option value="21:00">Sebelum jam 21:00</option>
                       </select>
                     </div>
                   </div>
@@ -829,7 +829,7 @@ export default function Order({ initialProduct = '' }) {
             </button>
 
             <p className="summary-note">
-              Order mu akan diproses/dihitung ulang sebelum pembayaran
+              Order mu akan diproses dan dihitung ulang sebelum pembayaran
             </p>
           </aside>
         </div>
